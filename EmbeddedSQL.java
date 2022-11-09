@@ -249,39 +249,71 @@ public class EmbeddedSQL {
    }//end QueryExample
    
    public static void Query1(EmbeddedSQL esql){
-      // Your code goes here.
-      // ...
-      // ...
+	try{
+		String query = "SELECT C.SID, COUNT(C.PID) FROM catalog C GROUP BY C.SID";
+		int rowCount = esql.executeQuery(query);
+		System.out.println ("total row(s): " + rowCount);
+	}catch(Exception e){
+		System.err.println (e.getMessage());
+	}
    }//end Query1
 
    public static void Query2(EmbeddedSQL esql){
-      // Your code goes here.
-      // ...
-      // ...
+	try{
+		String query = "SELECT C.SID, COUNT(C.PID) FROM catalog C GROUP BY C.SID HAVING COUNT(C.PID)>=3";
+		int rowCount = esql.executeQuery(query);
+		System.out.println ("total row(s): " + rowCount);
+	}catch(Exception e){
+		System.err.println (e.getMessage());
+	}
    }//end Query2
 
    public static void Query3(EmbeddedSQL esql){
-      // Your code goes here.
-      // ...
-      // ...
+	try{
+		String query = "SELECT DISTINCT S.sname, COUNT(C.PID)FROM catalog C, suppliers S, PARTS P WHERE C.sid=S.sid AND NOT EXISTS (SELECT * FROM catalog C1, parts P1 WHERE C1.sid=C.sid AND  C1.pid=P1.pid AND P1.color!='Green') AND EXISTS (SELECT * FROM catalog C1, parts P1 WHERE C1.sid=C.sid AND  C1.pid=P1.pid AND P1.color='Green') GROUP BY S.sid";
+		int rowCount = esql.executeQuery(query);
+		System.out.println ("total row(s): " + rowCount);
+	}catch(Exception e){
+		System.err.println (e.getMessage());
+	}
    }//end Query3
 
    public static void Query4(EmbeddedSQL esql){
-      // Your code goes here.
-      // ...
-      // ...
+	try{
+		String query = "SELECT S.sname, Max(C.cost) FROM suppliers S, catalog C, (SELECT C1.sid FROM catalog C1, parts P1 WHERE P1.PID=C1.PID AND P1.color='Green' INTERSECT SELECT C2.sid FROM catalog C2, parts P2 WHERE P2.PID=C2.PID AND P2.color='Red') AS temp WHERE temp.sid=C.sid AND S.sid=C.sid GROUP BY S.sid";
+		int rowCount = esql.executeQuery(query);
+		System.out.println ("total row(s): " + rowCount);
+	}catch(Exception e){
+		System.err.println (e.getMessage());
+	}
    }//end Query4
 
    public static void Query5(EmbeddedSQL esql){
-      // Your code goes here.
-      // ...
-      // ...
+	try{
+		String query = "SELECT P.pname FROM parts P, catalog C WHERE P.pid=C.pid AND C.cost < “;
+		System.out.print("\tEnter cost: $");
+		String input = in.readLine();
+		query += input;
+
+		int rowCount = esql.executeQuery(query);
+		System.out.println ("total row(s): " + rowCount);
+	}catch(Exception e){
+		System.err.println (e.getMessage());
+	}
    }//end Query5
 
    public static void Query6(EmbeddedSQL esql){
-      // Your code goes here.
-      // ...
-      // ...
+  	try{
+		String query = "SELECT S.address FROM supplier S, catalog C, parts P WHERE C.sid=S.sid AND C.pid=P.pid AND P.pname= ";
+		System.out.print("\tEnter part name: ");
+		String input = in.readLine();
+		query += input;
+
+		int rowCount = esql.executeQuery(query);
+		System.out.println ("total row(s): " + rowCount);
+	}catch(Exception e){
+		System.err.println (e.getMessage());
+	}
    }//end Query6
 
 }//end EmbeddedSQL
