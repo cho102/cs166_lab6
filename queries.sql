@@ -7,14 +7,16 @@ ON S.SID=C.SID;
 
 
 /*Find the total number of parts supplied by each supplier.*/
-SELECT C.SID, COUNT(C.PID)
-FROM catalog C
-GROUP BY C.SID;
+SELECT S.sname, COUNT(C.PID)
+FROM catalog C, suppliers S
+WHERE S.sid=C.sid
+GROUP BY S.SID;
 
 /*Find the total number of parts supplied by each supplier who supplies at least 3 parts.*/
-SELECT C.SID, COUNT(C.PID)
-FROM catalog C
-GROUP BY C.SID
+SELECT S.sname, COUNT(C.PID)
+FROM catalog C, suppliers S
+WHERE S.sid=C.sid
+GROUP BY S.SID
 HAVING COUNT(C.PID)>=3;
 
 /*For every supplier that supplies only green parts, print the name of the supplier and the total number of parts that he supples.*/

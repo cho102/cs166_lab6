@@ -250,7 +250,7 @@ public class EmbeddedSQL {
    
    public static void Query1(EmbeddedSQL esql){
 	try{
-		String query = "SELECT C.SID, COUNT(C.PID) FROM catalog C GROUP BY C.SID";
+		String query = "SELECT S.sname, COUNT(C.PID) FROM catalog C, suppliers S WHERE C.sid=S.sid GROUP BY S.SID";
 		int rowCount = esql.executeQuery(query);
 		System.out.println ("total row(s): " + rowCount);
 	}catch(Exception e){
@@ -260,7 +260,7 @@ public class EmbeddedSQL {
 
    public static void Query2(EmbeddedSQL esql){
 	try{
-		String query = "SELECT C.SID, COUNT(C.PID) FROM catalog C GROUP BY C.SID HAVING COUNT(C.PID)>=3";
+		String query = "SELECT S.sname, COUNT(C.PID) FROM catalog C, suppliers S WHERE C.sid=S.sid GROUP BY S.SID HAVING COUNT(C.PID)>=3";
 		int rowCount = esql.executeQuery(query);
 		System.out.println ("total row(s): " + rowCount);
 	}catch(Exception e){
@@ -290,11 +290,10 @@ public class EmbeddedSQL {
 
    public static void Query5(EmbeddedSQL esql){
 	try{
-		String query = "SELECT P.pname FROM parts P, catalog C WHERE P.pid=C.pid AND C.cost < “;
+		String query = "SELECT DISTINCT P.pname FROM parts P, catalog C WHERE P.pid=C.pid AND C.cost < ";
 		System.out.print("\tEnter cost: $");
 		String input = in.readLine();
 		query += input;
-
 		int rowCount = esql.executeQuery(query);
 		System.out.println ("total row(s): " + rowCount);
 	}catch(Exception e){
@@ -304,11 +303,13 @@ public class EmbeddedSQL {
 
    public static void Query6(EmbeddedSQL esql){
   	try{
-		String query = "SELECT S.address FROM supplier S, catalog C, parts P WHERE C.sid=S.sid AND C.pid=P.pid AND P.pname= ";
+		String query = "SELECT S.address FROM suppliers S, catalog C, parts P WHERE C.sid=S.sid AND C.pid=P.pid AND P.pname= ";
 		System.out.print("\tEnter part name: ");
 		String input = in.readLine();
-		query += input;
-
+		String input1= "\'" + input + "\'";
+		query += input1;
+		System.out.println("input: " + input);
+			
 		int rowCount = esql.executeQuery(query);
 		System.out.println ("total row(s): " + rowCount);
 	}catch(Exception e){
